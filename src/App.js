@@ -1,10 +1,11 @@
-
-
+import { Container, Header } from "./components";
+import { Hero } from "./layout";
 export const App = () =>  {
   return (
-    <div className="App">
-      
-    </div>
+    <Container>
+      <Header />
+      <Hero/>
+    </Container>
   );
 }
 
