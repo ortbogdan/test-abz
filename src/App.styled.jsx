@@ -1,6 +1,7 @@
-import styled from 'styled-components';
-import backImg from '../../images/pexels-alexandr-podvalny-1227513.jpeg'
+import styled from "styled-components";
+import backImg from './images/pexels-alexandr-podvalny-1227513.jpeg'
 export const HeroSection = styled.section`
+   height: 500px;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -26,7 +27,7 @@ export const HeroBox = styled.div`
   }
    
 `
-export const HeroTitle = styled.h1`
+export const Title = styled.h1`
     margin-bottom: 21px;
 `
 export const HeroInfo = styled.p`
