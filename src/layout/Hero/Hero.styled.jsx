@@ -21,7 +21,9 @@ export const HeroBox = styled.div`
    align-items: center;
 
    text-align: center; 
-  
+@media screen and (min-width: 768px) {
+     width: 380px
+  }
    
 `
 export const HeroTitle = styled.h1`

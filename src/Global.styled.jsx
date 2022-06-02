@@ -18,9 +18,7 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 40px;
     line-height: 1;
     
-    
-    text-align: center;
-   
+    text-align: center; 
 }
 ul {
     margin: 0;
