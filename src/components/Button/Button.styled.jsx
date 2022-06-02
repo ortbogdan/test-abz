@@ -6,6 +6,8 @@ height: 34px;
 border-radius: 80px;
 border: none;
 background-color: rgb(244, 224, 65);
+
+cursor: pointer;
 transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 :hover,
 :focus {
@@ -13,5 +15,6 @@ transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 :disabled {
     background-color: rgb(180, 180, 180);
+    cursor: auto;
 }
 `

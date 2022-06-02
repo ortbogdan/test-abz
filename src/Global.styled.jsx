@@ -1,9 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 export const GlobalStyle = createGlobalStyle`body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-  
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.625;
 }
 img {
   display: block;
@@ -12,11 +13,14 @@ img {
 }
 h1, h2, h3, h4, h5, h6 {
     margin: 0;
-    /* font-family: 'Josefin Sans', sans-serif; */
+
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1;
     
     
     text-align: center;
-    font-weight: 500;
+   
 }
 ul {
     margin: 0;
