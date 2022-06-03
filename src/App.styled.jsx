@@ -17,19 +17,34 @@ export const HeroSection = styled.section`
 export const HeroBox = styled.div`
    
    width: 100%;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-
+   display: grid;
+   grid-template-columns: 100%;
+   grid-gap: 21px;
+   justify-items: center;
+   
    text-align: center; 
 @media screen and (min-width: 768px) {
      width: 380px
   }
    
 `
+
 export const Title = styled.h1`
-    margin-bottom: 21px;
-`
-export const HeroInfo = styled.p`
-    margin-bottom: 21px;
+    margin-bottom: 50px;
+` 
+export const UsersList = styled.ul`
+  margin-bottom: 50px;
+  
+  display: grid;
+  grid-template-columns: 328px;
+  grid-gap: 20px;
+  justify-content: center;
+  @media screen and (min-width: 768px){
+    grid-template-columns: 344px 344px;
+    grid-gap: 16px;
+  }
+  @media screen and (min-width: 1024px) {
+    grid-template-columns:  282px 282px 282px;
+    grid-gap: 29px;
+  }
 `

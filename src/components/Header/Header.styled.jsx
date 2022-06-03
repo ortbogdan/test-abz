@@ -13,6 +13,7 @@ export const ButtonsBox = styled.div`
     justify-content: space-between;
 `
 export const HeaderBox = styled.div`
+    width: 100%;
     display: flex;
     justify-content: space-between;
 `

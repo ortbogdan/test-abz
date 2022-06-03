@@ -1,8 +1,8 @@
-import { Header, Button, Container } from "./components";
-import { Users } from "./layout";
+import { Header, Button, Container, Section, Preloader, Card } from "./components";
+
 import { getUsers } from "./services/api";
 import { useState, useEffect } from "react";
-import { Title, HeroBox, HeroInfo, HeroSection } from "./App.styled";
+import { Title, HeroBox, HeroSection, UsersList } from "./App.styled";
 export const App = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
@@ -32,13 +32,24 @@ export const App = () => {
       <HeroSection>
         <Container>
          <HeroBox>
-          <Title>Test assignment for front-end developer</Title>
-          <HeroInfo>What defines a good front-end developer is one that has skilled knowledge of HTML, CSS, JS with a vast understanding of User design thinking as they'll be building web interfaces with accessibility in mind. They should also be excited to learn, as the world of Front-End Development keeps evolving.</HeroInfo>
+          <h1>Test assignment for front-end developer</h1>
+          <p>What defines a good front-end developer is one that has skilled knowledge of HTML, CSS, JS with a vast understanding of User design thinking as they'll be building web interfaces with accessibility in mind. They should also be excited to learn, as the world of Front-End Development keeps evolving.</p>
           <Button>Sing up</Button>
          </HeroBox>
         </Container>
       </HeroSection>
-      <Users users={users} showMore={onShowMoreBtnClick} isLoading={loading}/>
+      <Section>
+        <Container>
+            <div>
+            <Title>Working with GET request</Title>
+            <UsersList>{users.map(user => <li key={user.id}>
+                <Card user={user}/>
+            </li>)}</UsersList>
+            {loading && <Preloader/>}
+            <Button onClick={onShowMoreBtnClick}>Show more</Button>
+            </div>
+        </Container>
+    </Section>
     </>
   );
 }

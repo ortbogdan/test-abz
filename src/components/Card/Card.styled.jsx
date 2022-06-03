@@ -14,7 +14,7 @@ export const CardWrapper = styled.article`
  flex-direction: column;
  align-items: center;
  justify-content: space-between;
- width: 282px;
+ max-width: 344px;
  height: 254px;
 
  border-radius: 10px;
