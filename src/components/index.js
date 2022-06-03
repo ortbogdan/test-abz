@@ -5,4 +5,5 @@ import { Button } from "./Button/Button";
 import { Card } from "./Card/Card";
 import { Section } from "./Section/Section";
 import { Preloader } from "./Preloader/Preloader";
-export { Container, Logo, Header, Button, Card, Section, Preloader };
+import { Form } from "./Form/Form";
+export { Container, Logo, Header, Button, Card, Section, Preloader, Form };

@@ -1,5 +1,5 @@
-import { Header, Button, Container, Section, Preloader, Card } from "./components";
-
+import { Header, Button, Container, Section, Preloader, Card, Form } from "./components";
+import * as Scroll from 'react-scroll';
 import { getUsers } from "./services/api";
 import { useState, useEffect } from "react";
 import { Title, HeroBox, HeroSection, UsersList } from "./App.styled";
@@ -7,17 +7,20 @@ export const App = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [totalUsers, setTotalUsers] = useState(null)
+  
   useEffect(() => {
     
     async function fetchUsers() {
       try {
         setLoading(true);
-        const items = await getUsers(page);
-        page === 1 ? setUsers(items) : setUsers(prevItems => [...prevItems, ...items]);
+        const {users, total_users} = await getUsers(page);
+        page === 1 ? setUsers(users) : setUsers(prevItems => [...prevItems, ...users]);
+        setTotalUsers(total_users);
       } catch (error) {
         console.log(error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
     fetchUsers();
@@ -25,6 +28,7 @@ export const App = () => {
   const onShowMoreBtnClick = () => {
     console.log(page);
     setPage(prevPage => prevPage + 1);
+    setTimeout(() => { Scroll.animateScroll.scrollToBottom(); }, 700);
   }
   return (
     <>
@@ -46,10 +50,19 @@ export const App = () => {
                 <Card user={user}/>
             </li>)}</UsersList>
             {loading && <Preloader/>}
-            <Button onClick={onShowMoreBtnClick}>Show more</Button>
+            {totalUsers !== users.length && <Button onClick={onShowMoreBtnClick}>Show more</Button>}
             </div>
         </Container>
-    </Section>
+      </Section>
+      <Section>
+        <Container>
+          <div>
+            <Title>Working with POST request</Title>
+            <Form />
+          </div>
+          
+        </Container>
+      </Section>
     </>
   );
 }
