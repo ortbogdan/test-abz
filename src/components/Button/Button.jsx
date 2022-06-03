@@ -1,7 +1,7 @@
 import { PrimaryBtn } from "./Button.styled"
 
 
-export const Button = ({ children, disabled, onClick, type }) => {
+export const Button = ({ children, disabled, onClick, type='button' }) => {
     
     if (disabled) { return < PrimaryBtn type={type} disabled > {children}</PrimaryBtn > }
     else {

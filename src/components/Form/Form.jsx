@@ -1,32 +1,19 @@
 import { Button } from '../index';
 import { useState, useEffect } from 'react';
-import { getPosition, setUser, getToken } from '../../services/api';
-export const Form = () => {
+import { getPosition } from '../../services/api';
+export const Form = ({addUser}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [position_id, setPosition_id] = useState(1);
     const [photo, setPhoto] = useState('');
     const [positions, setPositions] = useState([]);
-    const handleSubmit = async event => {
-        event.preventDefault();
-        try {
-            const token = await getToken();
-            const data = { name, email, phone, position_id, photo }
-            const user = await setUser(data, token);
-        console.log(user);
-        } catch (error) {
-            console.log(error);
-        }
+  const handleSubmit = async event => {
+      event.preventDefault();
+      const newUser = {name, email, phone, position_id, photo}
+      await addUser(newUser);
         
-        // resetForm();
-    }
-    const resetForm = () => {
-        setName('');
-        setEmail('');
-        setPhone('');
-        setPosition_id(1);
-        setPhoto('');
+      event.target.reset();
     }
     useEffect(() => {
         if (positions.length) return;
@@ -37,7 +24,7 @@ export const Form = () => {
         } catch (error) {
             console.log(error);
         }
-        } 
+      } 
         fetchPosition();
     })
     return <form onSubmit={handleSubmit}>
@@ -45,11 +32,9 @@ export const Form = () => {
       <input
         type="text"
         name="name"
-        // pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         required
         id="name"
         onChange={e => setName(e.target.value)}
-        value={name}
       /></div>
       <div><label htmlFor="email">Email</label>
       <input
@@ -58,18 +43,19 @@ export const Form = () => {
         required
         id="email"
         onChange={e => setEmail(e.target.value)}
-        value={email}
+        
       /></div>
       <div><label htmlFor="number">Phone</label>
       <input
         type="tel"
         name="phone"
-        pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+        pattern="^[\+]{0,1}380([0-9]{9})$)"
+        placeholder="+380"
         required
         id="number"
         onChange={e => setPhone(e.target.value)}
-        value={phone}
-        /></div>
+        />
+      </div>
       
       
     <fieldset>
@@ -80,15 +66,17 @@ export const Form = () => {
         </div>)}
     </fieldset>
     <div>
-      <label htmlFor="photo">Photo</label>
       <input
         type="file"
         name="photo"
         accept=".jpeg,.jpg"
+        placeholder="Upload your photo"
         required
         id="photo"
         onChange={e => setPhoto(e.target.files[0])}
-        /></div>
-      <Button type="submit">Sing up</Button>
+        />
+      </div>
+      {(name && email && phone && photo) ? <Button type="submit">Sing up</Button> : <Button disabled>Sing up</Button>}
+      
     </form>
 }

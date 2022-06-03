@@ -1,6 +1,6 @@
 import { Header, Button, Container, Section, Preloader, Card, Form } from "./components";
 import * as Scroll from 'react-scroll';
-import { getUsers } from "./services/api";
+import { getUsers, getToken, setNewUser } from "./services/api";
 import { useState, useEffect } from "react";
 import { Title, HeroBox, HeroSection, UsersList } from "./App.styled";
 export const App = () => {
@@ -9,8 +9,25 @@ export const App = () => {
   const [loading, setLoading] = useState(false);
   const [totalUsers, setTotalUsers] = useState(null)
   
+  const addUser = async newUser => {
+    const { name, email, phone, position_id, photo } = newUser;
+    try {
+            const token = await getToken();
+            const formData = new FormData();
+             formData.append('name', name);
+             formData.append('email', email);
+             formData.append('phone', phone);
+             formData.append('position_id', position_id);
+             formData.append('photo', photo);
+      const { success } = await setNewUser(formData, token);
+      if (success) {
+        setUsers(prevUsers => [...newUser, ...prevUsers])
+      }
+        } catch (error) {
+            console.log(error);
+        }
+  }
   useEffect(() => {
-    
     async function fetchUsers() {
       try {
         setLoading(true);
@@ -58,9 +75,8 @@ export const App = () => {
         <Container>
           <div>
             <Title>Working with POST request</Title>
-            <Form />
+            <Form addUser={addUser}/>
           </div>
-          
         </Container>
       </Section>
     </>

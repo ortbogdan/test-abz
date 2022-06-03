@@ -13,13 +13,12 @@ export const getUsers = async page => {
     }
 }
 
-export const setUser = async (user, token) => {
+export const setNewUser = async (user, token) => {
     console.log(user);
     try {
         const {data} = await axios.post('/users', user, { headers: {
             Token: token,
           }});
-        
         return data
     } catch (error) {
         console.log(error);
@@ -29,7 +28,6 @@ export const setUser = async (user, token) => {
 export const getPosition = async () => {
     try {
         const { data } = await axios.get('/positions');
-        
         return data
     } catch (error) {
         console.log(error);
