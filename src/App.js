@@ -1,5 +1,5 @@
 import { Header, Button, Container, Section, Preloader, Card, Form } from "./components";
-import * as Scroll from 'react-scroll';
+
 import { getUsers, getToken, setNewUser } from "./services/api";
 import { useState, useEffect } from "react";
 import { Title, HeroBox, HeroSection, UsersList } from "./App.styled";
@@ -19,10 +19,8 @@ export const App = () => {
              formData.append('phone', phone);
              formData.append('position_id', position_id);
              formData.append('photo', photo);
-      const { success } = await setNewUser(formData, token);
-      if (success) {
-        setUsers(prevUsers => [...newUser, ...prevUsers])
-      }
+      await setNewUser(formData, token);
+      // setUsers(prevUsers => [newUser, ...prevUsers]);
         } catch (error) {
             console.log(error);
         }
@@ -45,7 +43,7 @@ export const App = () => {
   const onShowMoreBtnClick = () => {
     console.log(page);
     setPage(prevPage => prevPage + 1);
-    setTimeout(() => { Scroll.animateScroll.scrollToBottom(); }, 700);
+    
   }
   return (
     <>

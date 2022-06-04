@@ -1,6 +1,9 @@
-import { Button } from '../index';
+import { Button, Input } from '../index';
 import { useState, useEffect } from 'react';
 import { getPosition } from '../../services/api';
+import { UserForm } from './Form.styled';
+// import TextField from '@mui/material/TextField';
+// import { style } from '@mui/system';
 export const Form = ({addUser}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -27,16 +30,19 @@ export const Form = ({addUser}) => {
       } 
         fetchPosition();
     })
-    return <form onSubmit={handleSubmit}>
-        <div><label htmlFor="name">Name</label>
+  return <UserForm onSubmit={handleSubmit}>
+    <Input type={'name'} onChange={e => setName(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
+    <Input type={'email'} onChange={e => setEmail(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
+    <Input type={'phone'} onChange={e => setPhone(e.target.value)} style={{ marginBottom: '25px', maxWidth: '380px' }} />
+        {/* <div><label htmlFor="name">Name</label>
       <input
         type="text"
         name="name"
         required
         id="name"
         onChange={e => setName(e.target.value)}
-      /></div>
-      <div><label htmlFor="email">Email</label>
+      /></div> */}
+      {/* <div><label htmlFor="email">Email</label>
       <input
         type="email"
         name="email"
@@ -44,18 +50,18 @@ export const Form = ({addUser}) => {
         id="email"
         onChange={e => setEmail(e.target.value)}
         
-      /></div>
-      <div><label htmlFor="number">Phone</label>
+      /></div> */}
+      {/* <div><label htmlFor="number">Phone</label>
       <input
         type="tel"
         name="phone"
         pattern="^[\+]{0,1}380([0-9]{9})$)"
-        placeholder="+380"
+        
         required
         id="number"
         onChange={e => setPhone(e.target.value)}
         />
-      </div>
+      </div> */}
       
       
     <fieldset>
@@ -78,5 +84,5 @@ export const Form = ({addUser}) => {
       </div>
       {(name && email && phone && photo) ? <Button type="submit">Sing up</Button> : <Button disabled>Sing up</Button>}
       
-    </form>
+    </UserForm>
 }

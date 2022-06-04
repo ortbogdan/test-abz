@@ -6,4 +6,5 @@ import { Card } from "./Card/Card";
 import { Section } from "./Section/Section";
 import { Preloader } from "./Preloader/Preloader";
 import { Form } from "./Form/Form";
-export { Container, Logo, Header, Button, Card, Section, Preloader, Form };
+import { Input } from "./Input/Input";
+export { Container, Logo, Header, Button, Card, Section, Preloader, Form, Input };
