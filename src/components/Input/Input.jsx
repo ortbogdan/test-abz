@@ -1,4 +1,9 @@
 import TextField from '@mui/material/TextField';
+import { UploadFileInput, InputBox } from './Input.styled';
+import * as React from 'react';
+import PropTypes from 'prop-types';
+
+import NumberFormat from 'react-number-format';
 
 export const Input = ({ type, onChange, style }) => {
     
@@ -27,12 +32,48 @@ export const Input = ({ type, onChange, style }) => {
             label="Phone"
             type="tel"
             style={style}
-                required
-                inputProps={ { pattern: `^[\+]{0,1}380([0-9]{9})$)`} }
-            // 
-            onChange={onChange}/>
+            required
+            // inputProps={ { pattern: `^[\+]{0,1}380([0-9]{9})$)`} }
+            // // 
+            InputProps={{
+               inputComponent: NumberFormatCustom,
+            }}
+                onChange={onChange} />
+        case 'file': 
+            return <label class="form-control"> 
+              <UploadFileInput  onChange={onChange} class="form-control" type="file" placeholder="Прикрепите файл" />
+ 	          <button> 
+ 		             Прикрепить файл
+ 	          </button> 
+            </label>
+        
         default: return 
     }
  
 }
-// { marginBottom: '50px', maxWidth: '380px' }
+
+const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
+  const { onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={values => {
+        console.log(values);
+        onChange(
+            values.formattedValue
+        );
+      }}
+    mask="_"
+    format="+38 (0##) ###-##-##"
+    />
+  );
+});
+
+
+
+
+NumberFormatCustom.propTypes = {
+  onChange: PropTypes.func.isRequired,
+};

@@ -17,12 +17,21 @@ export const Form = ({addUser}) => {
     const [photo, setPhoto] = useState('');
     const [positions, setPositions] = useState([]);
   const handleSubmit = async event => {
-      event.preventDefault();
-      const newUser = {name, email, phone, position_id, photo}
+    event.preventDefault();
+    const normalizedPhone = phone.split(/\)|\(|-|\s/).join('');
+    const newUser = { name, email, phone: normalizedPhone, position_id, photo }
+      console.log(newUser);
       await addUser(newUser);
-        
-      event.target.reset();
-    }
+      reset();
+  }
+  
+  const reset = () => {
+    setName('');
+    setEmail('');
+    setPhone('');
+    setPosition_id('');
+    setPhoto('');
+  }
     useEffect(() => {
         if (positions.length) return;
         async function fetchPosition() {
@@ -38,46 +47,48 @@ export const Form = ({addUser}) => {
   return <UserForm onSubmit={handleSubmit}>
     <Input type={'name'} onChange={e => setName(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
     <Input type={'email'} onChange={e => setEmail(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
-    <Input type={'phone'} onChange={e => setPhone(e.target.value)} style={{ marginBottom: '25px', maxWidth: '380px' }} />
-        {/* <div><label htmlFor="name">Name</label>
-      <input
-        type="text"
-        name="name"
-        required
-        id="name"
-        onChange={e => setName(e.target.value)}
-      /></div> */}
-      {/* <div><label htmlFor="email">Email</label>
-      <input
-        type="email"
-        name="email"
-        required
-        id="email"
-        onChange={e => setEmail(e.target.value)}
+    <Input type={'phone'} onChange={setPhone} style={{ marginBottom: '25px', maxWidth: '380px' }} />
         
-      /></div> */}
-      {/* <div><label htmlFor="number">Phone</label>
-      <input
-        type="tel"
-        name="phone"
-        pattern="^[\+]{0,1}380([0-9]{9})$)"
-        
-        required
-        id="number"
-        onChange={e => setPhone(e.target.value)}
-        />
-      </div> */}
-      
-      
-    {/* <fieldset>
-      <legend>Select your position</legend>
-      {positions.map(({name, id}) => <div key={id}>
-          <input type="checkbox" onChange={() => setPosition_id(id)} checked={id===position_id} id={id} name={name}/>
-        <label htmlFor={id}>{name}</label>
-        </div>)}
-    </fieldset> */}
     
-    <div>
+    <FormControl>
+            <FormLabel
+              style={{
+                fontFamily: 'Nunito',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                fontSize: '16px',
+                lineHeight: '26px',
+                color: 'inherit'
+              }}
+            >
+              Select your position
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="Select your position"
+              required
+            >
+              {positions.map(({id, name}) => (
+                <FormControlLabel
+                  onChange={() => setPosition_id(id)}
+                  checked={id===position_id}
+                  key={id}
+                  control={
+                    <Radio
+                      sx={{
+                        color: 'default',
+                        '&.Mui-checked': {
+                          color: '#00BDD3',
+                        },
+                      }}
+                    />
+                  }
+                  label={name}
+                />
+              ))}
+            </RadioGroup>
+          </FormControl>
+    
+     {/* <div>
       <input
         type="file"
         name="photo"
@@ -87,7 +98,8 @@ export const Form = ({addUser}) => {
         id="photo"
         onChange={e => setPhoto(e.target.files[0])}
         />
-      </div>
+      </div> */}
+      <Input type={'file'} onChange={e => setPhoto(e.target.files[0])} />
       {(name && email && phone && photo) ? <Button type="submit">Sing up</Button> : <Button disabled>Sing up</Button>}
       
     </UserForm>
