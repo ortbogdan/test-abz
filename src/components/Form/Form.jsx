@@ -2,8 +2,13 @@ import { Button, Input } from '../index';
 import { useState, useEffect } from 'react';
 import { getPosition } from '../../services/api';
 import { UserForm } from './Form.styled';
-// import TextField from '@mui/material/TextField';
-// import { style } from '@mui/system';
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from '@mui/material';
 export const Form = ({addUser}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -64,13 +69,14 @@ export const Form = ({addUser}) => {
       </div> */}
       
       
-    <fieldset>
+    {/* <fieldset>
       <legend>Select your position</legend>
       {positions.map(({name, id}) => <div key={id}>
           <input type="checkbox" onChange={() => setPosition_id(id)} checked={id===position_id} id={id} name={name}/>
         <label htmlFor={id}>{name}</label>
         </div>)}
-    </fieldset>
+    </fieldset> */}
+    
     <div>
       <input
         type="file"
