@@ -1,13 +1,49 @@
-import { Header, Button, Container, Section, Preloader, Card, Form } from "./components";
-
-import { getUsers, getToken, setNewUser } from "./services/api";
+import { Container, Button, Section, Preloader, Card, Form, Header} from "./components";
+import { getUsers, getToken, setNewUser, getUserById } from "./services/api";
 import { useState, useEffect } from "react";
-import { Title, HeroBox, HeroSection, UsersList } from "./App.styled";
+import { Title, HeroBox, UsersList, HeroSection } from "./App.styled";
+
 export const App = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [totalUsers, setTotalUsers] = useState(null)
+
+  const [isUserAdded, setIsUserAdded] = useState(false);
+  const [newUserId, setNewUserId] = useState(null)
+  useEffect(() => {
+    console.log("1");
+    async function fetchUsers() {
+      try {
+        setLoading(true);
+        const { users, total_users } = await getUsers(page);
+        page === 1 ? setUsers(users) : setUsers(prevItems => [...prevItems, ...users]);
+        setTotalUsers(total_users);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchUsers();
+  }, [page]);
+
+  useEffect(() => {
+    // реалізовано додавання до вже існуючого списку юзерів
+    if (isUserAdded === false) return
+    console.log("2");
+    async function fetchNewUsers() {
+      const {user} = await await getUserById(newUserId);
+      setUsers(prevUsers => 
+        [user, ...prevUsers]
+      )
+    }
+    fetchNewUsers();
+  }, [isUserAdded, newUserId]);
+  
+  const onShowMoreBtnClick = () => {
+    setPage(prevPage => prevPage + 1);
+  }
   
   const addUser = async newUser => {
     const { name, email, phone, position_id, photo } = newUser;
@@ -19,35 +55,23 @@ export const App = () => {
              formData.append('phone', phone);
              formData.append('position_id', position_id);
              formData.append('photo', photo);
-      await setNewUser(formData, token);
-      // setUsers(prevUsers => [newUser, ...prevUsers]);
+      const data = await setNewUser(formData, token);
+      if (data.success) {
+        setIsUserAdded(true);
+        setNewUserId(data.user_id);
+      } else {
+        console.log(data.message);
+      }
         } catch (error) {
             console.log(error);
         }
   }
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        setLoading(true);
-        const {users, total_users} = await getUsers(page);
-        page === 1 ? setUsers(users) : setUsers(prevItems => [...prevItems, ...users]);
-        setTotalUsers(total_users);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchUsers();
-  }, [page])
-  const onShowMoreBtnClick = () => {
-    console.log(page);
-    setPage(prevPage => prevPage + 1);
-    
-  }
+
+  
+  
   return (
     <>
-      <Header />
+        <Header />
       <HeroSection>
         <Container>
          <HeroBox>
@@ -56,16 +80,20 @@ export const App = () => {
           <Button>Sing up</Button>
          </HeroBox>
         </Container>
-      </HeroSection>
+        
+        
+        </HeroSection>
+      
       <Section>
-        <Container>
+
+          <Container>
             <div>
             <Title>Working with GET request</Title>
             <UsersList>{users.map(user => <li key={user.id}>
                 <Card user={user}/>
             </li>)}</UsersList>
             {loading && <Preloader/>}
-            {totalUsers !== users.length && <Button onClick={onShowMoreBtnClick}>Show more</Button>}
+            {totalUsers !== users.length && <Button onClick={onShowMoreBtnClick} style={{width: '120px'}}>Show more</Button>}
             </div>
         </Container>
       </Section>
@@ -73,7 +101,8 @@ export const App = () => {
         <Container>
           <div>
             <Title>Working with POST request</Title>
-            <Form addUser={addUser}/>
+              {loading && <Preloader/>}
+              <Form addUser={addUser} isUserAdded={isUserAdded} />
           </div>
         </Container>
       </Section>

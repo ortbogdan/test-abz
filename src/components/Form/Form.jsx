@@ -1,36 +1,33 @@
 import { Button, Input } from '../index';
 import { useState, useEffect } from 'react';
 import { getPosition } from '../../services/api';
-import { UserForm } from './Form.styled';
+import { UserForm, InputLabel, UploadFileInput, FileInputBox, Placeholder, SuccessSignBox, SuccessSignTitle } from './Form.styled';
+import successImg from '../../images/success-image.svg'
+import PropTypes from 'prop-types';
+import { isValid } from '../../services/isValid';
 import {
   FormControl,
   FormControlLabel,
   FormLabel,
   Radio,
   RadioGroup,
+  
 } from '@mui/material';
-export const Form = ({addUser}) => {
+export const Form = ({addUser, isUserAdded}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [position_id, setPosition_id] = useState(1);
     const [photo, setPhoto] = useState('');
     const [positions, setPositions] = useState([]);
+  
   const handleSubmit = async event => {
     event.preventDefault();
     const normalizedPhone = phone.split(/\)|\(|-|\s/).join('');
     const newUser = { name, email, phone: normalizedPhone, position_id, photo }
       console.log(newUser);
       await addUser(newUser);
-      reset();
-  }
-  
-  const reset = () => {
-    setName('');
-    setEmail('');
-    setPhone('');
-    setPosition_id('');
-    setPhoto('');
+      event.target.reset();
   }
     useEffect(() => {
         if (positions.length) return;
@@ -44,16 +41,14 @@ export const Form = ({addUser}) => {
       } 
         fetchPosition();
     })
-  return <UserForm onSubmit={handleSubmit}>
-    <Input type={'name'} onChange={e => setName(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
-    <Input type={'email'} onChange={e => setEmail(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
+  return isUserAdded ? <SuccessSignBox><SuccessSignTitle>User successfully registered</SuccessSignTitle><img src={successImg} alt="User successfully added!" /></SuccessSignBox> : <UserForm onSubmit={handleSubmit}>
+    <Input type={'name'} value={name} onChange={e => setName(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} error={isValid(name, 'name')}/>
+    <Input type={'email'} onChange={e =>  setEmail(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
     <Input type={'phone'} onChange={setPhone} style={{ marginBottom: '25px', maxWidth: '380px' }} />
-        
-    
-    <FormControl>
+    <FormControl style={{marginBottom: '50px'}}>
             <FormLabel
               style={{
-                fontFamily: 'Nunito',
+                fontFamily: 'inherit',
                 fontStyle: 'normal',
                 fontWeight: '400',
                 fontSize: '16px',
@@ -87,20 +82,17 @@ export const Form = ({addUser}) => {
               ))}
             </RadioGroup>
           </FormControl>
-    
-     {/* <div>
-      <input
-        type="file"
-        name="photo"
-        accept=".jpeg,.jpg"
-        placeholder="Upload your photo"
-        required
-        id="photo"
-        onChange={e => setPhoto(e.target.files[0])}
-        />
-      </div> */}
-      <Input type={'file'} onChange={e => setPhoto(e.target.files[0])} />
-      {(name && email && phone && photo) ? <Button type="submit">Sing up</Button> : <Button disabled>Sing up</Button>}
-      
-    </UserForm>
-}
+    <InputLabel htmlFor='file-input'>
+          <FileInputBox>
+            Upload
+        <UploadFileInput id='file-input'  type="file" onChange={e =>setPhoto(e.target.files[0])} />
+          </FileInputBox>
+      <Placeholder>{photo ? photo.name : 'Upload your photo'}</Placeholder>
+          </InputLabel>
+    {(name && email && phone && photo) ? <Button type="submit">Sing up</Button> : <Button disabled>Sing up</Button>} 
+    </UserForm>}
+  
+Form.propTypes = {
+  addUser: PropTypes.func.isRequired,
+  isUserAdded: PropTypes.bool.isRequired,
+};

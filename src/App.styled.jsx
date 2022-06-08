@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import backImg from './images/pexels-alexandr-podvalny-1227513.jpeg'
+import backImg from './images/pexels-alexandr-podvalny-1227513.webp'
 export const HeroSection = styled.section`
    height: 500px;
    display: flex;
