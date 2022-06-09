@@ -127,7 +127,7 @@ export const Form = ({addUser, isUserAdded}) => {
     <InputLabel htmlFor='file-input'>
           <FileInputBox>
             Upload
-        <UploadFileInput id='file-input'  type="file" onChange={e =>setPhoto(e.target.files[0])} />
+        <UploadFileInput id='file-input' accept=".jpeg,.jpg"  type="file" onChange={e =>setPhoto(e.target.files[0])} />
           </FileInputBox>
       <Placeholder>{photo ? photo.name : 'Upload your photo'}</Placeholder>
           </InputLabel>
