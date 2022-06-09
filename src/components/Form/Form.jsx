@@ -1,17 +1,16 @@
-import { Button, Input } from '../index';
+import { Button, NumberFormatCustom, InputHelperText } from '../index';
 import { useState, useEffect } from 'react';
-import { getPosition } from '../../services/api';
 import { UserForm, InputLabel, UploadFileInput, FileInputBox, Placeholder, SuccessSignBox, SuccessSignTitle } from './Form.styled';
 import successImg from '../../images/success-image.svg'
 import PropTypes from 'prop-types';
-import { isValid } from '../../services/isValid';
+import { isValid, getPosition, normalizePhone } from '../../services';
 import {
   FormControl,
   FormControlLabel,
   FormLabel,
   Radio,
   RadioGroup,
-  
+  TextField
 } from '@mui/material';
 export const Form = ({addUser, isUserAdded}) => {
     const [name, setName] = useState('');
@@ -23,9 +22,8 @@ export const Form = ({addUser, isUserAdded}) => {
   
   const handleSubmit = async event => {
     event.preventDefault();
-    const normalizedPhone = phone.split(/\)|\(|-|\s/).join('');
+    const normalizedPhone = normalizePhone(phone);
     const newUser = { name, email, phone: normalizedPhone, position_id, photo }
-      console.log(newUser);
       await addUser(newUser);
       event.target.reset();
   }
@@ -42,9 +40,53 @@ export const Form = ({addUser, isUserAdded}) => {
         fetchPosition();
     })
   return isUserAdded ? <SuccessSignBox><SuccessSignTitle>User successfully registered</SuccessSignTitle><img src={successImg} alt="User successfully added!" /></SuccessSignBox> : <UserForm onSubmit={handleSubmit}>
-    <Input type={'name'} value={name} onChange={e => setName(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} error={isValid(name, 'name')}/>
-    <Input type={'email'} onChange={e =>  setEmail(e.target.value)} style={{ marginBottom: '50px', maxWidth: '380px' }} />
-    <Input type={'phone'} onChange={setPhone} style={{ marginBottom: '25px', maxWidth: '380px' }} />
+    
+      <TextField
+        id="name"
+        label="Name"
+        
+        value={name}
+        onChange={e => setName(e.target.value)}
+        error={isValid(name, 'name')}
+        fullWidth
+        style={{ marginBottom: '50px', maxWidth: '380px' }}
+        required
+        helperText=' '
+        FormHelperTextProps={
+        
+           {component: InputHelperText}
+        
+        }
+      />
+    
+    
+    <TextField
+        id="email"
+        label="Email"
+        value={email}
+        onChange={e =>  setEmail(e.target.value)}
+        error={isValid(email, 'email')}
+        fullWidth
+        helperText=' '
+        style={{ marginBottom: '50px', maxWidth: '380px' }}
+        required
+        FormHelperTextProps={
+           {component: InputHelperText}
+        }
+    />
+    <TextField
+        id="phone"
+        label="Phone"
+        onChange={setPhone}
+        error={isValid(normalizePhone(phone), 'phone')}
+        fullWidth
+        style={{ marginBottom: '25px', maxWidth: '380px' }}
+        required
+        helperText="+38 (XXX) XXX - XX - XX"
+        InputProps={{
+               inputComponent: NumberFormatCustom,
+        }}
+    />
     <FormControl style={{marginBottom: '50px'}}>
             <FormLabel
               style={{

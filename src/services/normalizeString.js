@@ -1,5 +1,5 @@
 
-export const normalizeString = string => {
+export function normalizeString  (string) {
     if (string.length < 30) {
         return string;
     } else {

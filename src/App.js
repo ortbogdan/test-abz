@@ -1,5 +1,5 @@
 import { Container, Button, Section, Preloader, Card, Form, Header} from "./components";
-import { getUsers, getToken, setNewUser, getUserById } from "./services/api";
+import { getUsers, getToken, setNewUser } from "./services";
 import { useState, useEffect } from "react";
 import { Title, HeroBox, UsersList, HeroSection } from "./App.styled";
 
@@ -10,9 +10,8 @@ export const App = () => {
   const [totalUsers, setTotalUsers] = useState(null)
 
   const [isUserAdded, setIsUserAdded] = useState(false);
-  const [newUserId, setNewUserId] = useState(null)
+ 
   useEffect(() => {
-    console.log("1");
     async function fetchUsers() {
       try {
         setLoading(true);
@@ -29,17 +28,21 @@ export const App = () => {
   }, [page]);
 
   useEffect(() => {
-    // реалізовано додавання до вже існуючого списку юзерів
     if (isUserAdded === false) return
-    console.log("2");
     async function fetchNewUsers() {
-      const {user} = await await getUserById(newUserId);
-      setUsers(prevUsers => 
-        [user, ...prevUsers]
-      )
+      try {
+        // setLoading(true);
+        const { users, total_users } = await getUsers(1);
+        setUsers(users);
+        setTotalUsers(total_users);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     }
     fetchNewUsers();
-  }, [isUserAdded, newUserId]);
+  }, [isUserAdded]);
   
   const onShowMoreBtnClick = () => {
     setPage(prevPage => prevPage + 1);
@@ -58,7 +61,6 @@ export const App = () => {
       const data = await setNewUser(formData, token);
       if (data.success) {
         setIsUserAdded(true);
-        setNewUserId(data.user_id);
       } else {
         console.log(data.message);
       }
@@ -88,7 +90,7 @@ export const App = () => {
 
           <Container>
             <div>
-            <Title>Working with GET request</Title>
+            <Title id="users">Working with GET request</Title>
             <UsersList>{users.map(user => <li key={user.id}>
                 <Card user={user}/>
             </li>)}</UsersList>
@@ -100,7 +102,7 @@ export const App = () => {
       <Section>
         <Container>
           <div>
-            <Title>Working with POST request</Title>
+            <Title id="sing-up">Working with POST request</Title>
               {loading && <Preloader/>}
               <Form addUser={addUser} isUserAdded={isUserAdded} />
           </div>
