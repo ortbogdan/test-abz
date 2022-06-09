@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const PrimaryBtn = styled.button`
+
 width: 100px;
 height: 34px;
 padding: 4px 0;
@@ -17,5 +18,9 @@ transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 :disabled {
     background-color: rgb(180, 180, 180);
     cursor: auto;
+}
+>a {
+    width: 100%;
+    height: 100%;
 }
 `

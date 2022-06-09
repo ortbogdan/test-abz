@@ -7,9 +7,10 @@ export const Header = () => {
         <Container>
         <HeaderBox>
         <Logo />
-        <ButtonsBox>       
-         <Button>Users</Button>
-         <Button>Sing up</Button>
+                <ButtonsBox> 
+               
+         <Button><a href="#users">Users</a></Button>
+         <Button><a href="#sing-up">Sing up</a></Button>
         </ButtonsBox>
         </HeaderBox>
         </Container>

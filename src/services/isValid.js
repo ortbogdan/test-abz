@@ -18,7 +18,6 @@ export function isValid(string, type) {
         case 'phone':
             if (string === '') return;
             return string.match(/^[/+]{0,1}380([0-9]{9})$/) === null;
-            // ^[\+]{0,1}380([0-9]{9})$
         default:
             return false;
     }
